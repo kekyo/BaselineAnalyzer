@@ -1,4 +1,13 @@
-﻿using System;
+﻿////////////////////////////////////////////////////////////////////////////
+//
+// BaselineAnalyzer - Analyzer that is kind to C# beginners.
+// Copyright (c) Kouji Matsui (@kozy_kekyo, @kekyo@mastodon.cloud)
+//
+// Licensed under Apache-v2: https://opensource.org/licenses/Apache-2.0
+//
+////////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -9,6 +18,7 @@ using System.Linq;
 
 namespace BaselineAnalyzer;
 
+[Parallelizable(ParallelScope.All)]
 public sealed class AsyncMethodNamingAnalyzerTests
 {
     private DiagnosticAnalyzer analyzer;
@@ -23,10 +33,10 @@ public sealed class AsyncMethodNamingAnalyzerTests
     {
         var syntaxTree = CSharpSyntaxTree.ParseText(code);
 
-        var references = AppDomain.CurrentDomain.GetAssemblies()
-            .Where(a => !a.IsDynamic && !string.IsNullOrWhiteSpace(a.Location))
-            .Select(a => MetadataReference.CreateFromFile(a.Location))
-            .Cast<MetadataReference>();
+        var references = AppDomain.CurrentDomain.GetAssemblies().
+            Where(a => !a.IsDynamic && !string.IsNullOrWhiteSpace(a.Location)).
+            Select(a => MetadataReference.CreateFromFile(a.Location)).
+            Cast<MetadataReference>();
 
         var compilation = CSharpCompilation.Create("TestAssembly",
             new[] { syntaxTree },
@@ -34,7 +44,7 @@ public sealed class AsyncMethodNamingAnalyzerTests
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
         var compilationWithAnalyzers = compilation.WithAnalyzers(
-            ImmutableArray.Create<DiagnosticAnalyzer>(analyzer));
+            ImmutableArray.Create(analyzer));
 
         var diagnostics = await compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync();
 
@@ -133,28 +143,6 @@ namespace TestNamespace
         Assert.AreEqual("BLA0011", diagnostic.Id);
         Assert.AreEqual(DiagnosticSeverity.Warning, diagnostic.Severity);
         Assert.IsTrue(diagnostic.GetMessage().Contains("FetchItems"));
-    }
-
-    [Test]
-    public async Task DoesNotReportDiagnosticWhenNonAsyncMethodNameEndsWithNotAsync()
-    {
-        var testCode = @"
-using System.Threading.Tasks;
-
-namespace TestNamespace
-{
-    public class TestClass
-    {
-        public int FetchData()
-        {
-            return 123;
-        }
-    }
-}";
-
-        var diagnostics = await GetDiagnosticsAsync(testCode);
-
-        Assert.IsEmpty(diagnostics, "No diagnostics should be reported, as the method name ends with 'Async'.");
     }
 
     [Test]

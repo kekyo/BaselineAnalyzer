@@ -1,4 +1,13 @@
-﻿using System.Collections.Immutable;
+﻿////////////////////////////////////////////////////////////////////////////
+//
+// BaselineAnalyzer - Analyzer that is kind to C# beginners.
+// Copyright (c) Kouji Matsui (@kozy_kekyo, @kekyo@mastodon.cloud)
+//
+// Licensed under Apache-v2: https://opensource.org/licenses/Apache-2.0
+//
+////////////////////////////////////////////////////////////////////////////
+
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -54,16 +63,15 @@ public class AsyncMethodNamingAnalyzer : DiagnosticAnalyzer
             }
 
             // Return type is Task or ValueTask
-            if (returnType.Name == "Task" && returnType.ContainingNamespace.ToDisplayString() == "System.Threading.Tasks" ||
-                returnType.Name == "ValueTask" && returnType.ContainingNamespace.ToDisplayString() == "System.Threading.Tasks")
+            if (returnType.IsType("System.Threading.Tasks", "Task") ||
+                returnType.IsType("System.Threading.Tasks", "ValueTask"))
             {
                 ReportDiagnosticIfNotAsync(methodDeclaration, context);
                 return;
             }
 
             // Return type is IAsyncEnumerable<T>
-            if (returnType.Name == "IAsyncEnumerable" &&
-                returnType.ContainingNamespace.ToDisplayString() == "System.Collections.Generic")
+            if (returnType.IsType("System.Collections.Generic", "IAsyncEnumerable"))
             {
                 ReportDiagnosticIfNotAsync(methodDeclaration, context);
                 return;

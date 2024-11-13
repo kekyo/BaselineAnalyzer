@@ -1,4 +1,13 @@
-﻿using System.Collections.Immutable;
+﻿////////////////////////////////////////////////////////////////////////////
+//
+// BaselineAnalyzer - Analyzer that is kind to C# beginners.
+// Copyright (c) Kouji Matsui (@kozy_kekyo, @kekyo@mastodon.cloud)
+//
+// Licensed under Apache-v2: https://opensource.org/licenses/Apache-2.0
+//
+////////////////////////////////////////////////////////////////////////////
+
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
