@@ -31,7 +31,7 @@ public class AsyncMethodNamingAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor bla0012 = new DiagnosticDescriptor(
         "BLA0012",
         "synchronous method names must not include the 'Async' suffix",
-        "synchronous method '{0}' must not include the 'Async' suffix",
+        "Synchronous method '{0}' must not include the 'Async' suffix",
         "Naming",
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,

@@ -27,8 +27,8 @@ public sealed class TaskBlockingAnalyzer : DiagnosticAnalyzer
         isEnabledByDefault: true,
         "Result may cause a DANGER deadlock and is not recommended for asynchronous methods.");
 
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-        => ImmutableArray.Create(Rule);
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+        ImmutableArray.Create(Rule);
 
     public override void Initialize(AnalysisContext context)
     {

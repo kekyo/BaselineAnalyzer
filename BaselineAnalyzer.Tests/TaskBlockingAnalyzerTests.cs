@@ -79,7 +79,7 @@ namespace TestNamespace
     }
 
     [Test]
-    public async Task ReportsDiagnosticForTaskResult()
+    public async Task ReportsDiagnosticForTaskResult1()
     {
         var testCode = @"
 using System.Threading.Tasks;
@@ -103,5 +103,33 @@ namespace TestNamespace
         Assert.AreEqual("BLA0021", diagnostic.Id);
         Assert.AreEqual(DiagnosticSeverity.Warning, diagnostic.Severity);
         Assert.IsTrue(diagnostic.GetMessage().Contains("Result"));
+    }
+
+    [Test]
+    public async Task ReportsDiagnosticForTaskResult2()
+    {
+        var testCode = @"
+using System.Threading.Tasks;
+using System.IO;
+
+namespace TestNamespace
+{
+    public class TestClass
+    {
+        public void TestMethod(Stream stream)
+        {
+            var buffer = new byte[10];
+            stream.ReadAsync(buffer, 0, 10).Wait();
+        }
+    }
+}";
+
+        var diagnostics = await GetDiagnosticsAsync(testCode);
+
+        Assert.IsNotEmpty(diagnostics, "Expected a diagnostic to be reported.");
+        var diagnostic = diagnostics.First();
+        Assert.AreEqual("BLA0021", diagnostic.Id);
+        Assert.AreEqual(DiagnosticSeverity.Warning, diagnostic.Severity);
+        Assert.IsTrue(diagnostic.GetMessage().Contains("Wait"));
     }
 }
