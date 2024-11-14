@@ -99,9 +99,14 @@ public class AsyncMethodNamingAnalyzer : DiagnosticAnalyzer
         // Not applied `Async` suffix
         if (!methodDeclaration.Identifier.Text.EndsWith("Async"))
         {
-            var diagnostic = Diagnostic.Create(bla0011, methodDeclaration.Identifier.GetLocation(),
-                methodDeclaration.Identifier.Text);
-            context.ReportDiagnostic(diagnostic);
+            if (methodDeclaration.Identifier.Text != "Main" ||
+                !(methodDeclaration.Modifiers.Any(m => m.ValueText == "static") &&
+                  context.SemanticModel.GetTypeInfo(methodDeclaration.ReturnType).Type?.Name == "Task"))
+            {
+                var diagnostic = Diagnostic.Create(bla0011, methodDeclaration.Identifier.GetLocation(),
+                    methodDeclaration.Identifier.Text);
+                context.ReportDiagnostic(diagnostic);
+            }
         }
     }
 }

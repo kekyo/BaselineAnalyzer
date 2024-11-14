@@ -192,4 +192,26 @@ namespace TestNamespace
 
         Assert.IsEmpty(diagnostics, "No diagnostics should be reported, as the method name ends with 'Async'.");
     }
+
+    [Test]
+    public async Task DoesNotReportDiagnosticWhenMainAsyncMethodNameEndsWithoutAsync()
+    {
+        var testCode = @"
+using System.Threading.Tasks;
+
+namespace TestNamespace
+{
+    public class TestClass
+    {
+        public static Task Main()
+        {
+            return Task.CompletedTask;
+        }
+    }
+}";
+
+        var diagnostics = await GetDiagnosticsAsync(testCode);
+
+        Assert.IsEmpty(diagnostics, "No diagnostics should be reported, as the method name ends with 'Async'.");
+    }
 }
