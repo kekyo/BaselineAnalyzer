@@ -36,7 +36,15 @@ There is no need to configure the package, and it is easy to use.
 BaselineAnalyzer outputs an identification code and message like `BLA0001` when the IDE or compiler detects a problem.
 The message is output in the message window in the case of the IDE, or as a compiler message if the problem was discovered during compilation.
 
-Below is a description of the problem corresponding to the identifier.
+Below is a list of issues corresponding to the identifiers.
+
+|Identifier|Summary|
+|:----|:----|
+|`BLA0001`|The catch block does not contain a throw statement|
+|`BLA0002`|Avoid using 'throw ex;' in catch blocks, use 'throw;' instead to preserve stack trace|
+|`BLA0011`|Asynchronous method 'Foo' must include the 'Async' suffix|
+|`BLA0012`|If you implement a synchronous method, you append `Async` to the end of the method name|
+|`BLA0021`|Using 'Wait/Result' in asynchronous methods may cause deadlock|
 
 ### BLA0001: The catch block does not contain a throw statement
 
@@ -181,6 +189,14 @@ public Task FooAsync()
 }
 ```
 
+Whether a method is asynchronous or not is detected by the following conditions:
+
+* Methods that return a type of `Task` or `ValueTask` and its generic version.
+  * Methods that return `Task` or `ValueTask` and its generic version type,
+    except for the `static Main` method in the case of `Task`.
+* Methods that return the type of `IAsyncEnumerable<T>`.
+  * Excepts for extension methods (Assuming asynchronous operators such as `System.Linq.Async` package.)
+
 #### Why is this?
 
 There are a number of possible reasons,
@@ -208,6 +224,33 @@ public class Stream
 As shown above, even if you try to add a method that returns `Task<int>`,
 you cannot do so due to the rules of overloading
 (you cannot define multiple overloads with the same argument signature).
+
+### BLA0012: Synchronous method 'FooAsync' must not include the 'Async' suffix
+
+When implementing a synchronous method, adding `Async` to the end of the method name can cause confusion:
+
+```csharp
+// Despite being a synchronous method, the `Async` suffix is added to the end of the method name
+public int FooAsync()
+{
+    // ...
+}
+```
+
+You can fix this by removing `Async` from the end of the method name:
+
+```csharp
+// As this is a synchronous method, `Async` is not appended to the end of the method name
+public int Foo()
+{
+    // ...
+}
+```
+
+#### Why is this?
+
+This is the opposite pattern to `BLA0011`.
+For more information, please refer to `BLA0011`.
 
 ### BLA0021: Using 'Wait/Result' in asynchronous methods may cause deadlock
 
