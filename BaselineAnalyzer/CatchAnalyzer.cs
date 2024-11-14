@@ -25,7 +25,8 @@ public class CatchAnalyzer : DiagnosticAnalyzer
         "Usage",
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "Detects catch blocks that do not throw exceptions.");
+        description: "Detects catch blocks that do not throw exceptions.",
+        helpLinkUri: "https://github.com/kekyo/BaselineAnalyzer/blob/main/docs/BLA0001.md");
 
     private static readonly DiagnosticDescriptor bla0002 = new DiagnosticDescriptor(
         "BLA0002",
@@ -34,7 +35,8 @@ public class CatchAnalyzer : DiagnosticAnalyzer
         "Usage",
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "When rethrowing, do not specify caught exceptions.");
+        description: "When rethrowing, do not specify caught exceptions.",
+        helpLinkUri: "https://github.com/kekyo/BaselineAnalyzer/blob/main/docs/BLA0002.md");
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
         ImmutableArray.Create(bla0001, bla0002);

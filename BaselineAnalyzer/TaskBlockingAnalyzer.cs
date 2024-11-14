@@ -18,17 +18,18 @@ namespace BaselineAnalyzer;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class TaskBlockingAnalyzer : DiagnosticAnalyzer
 {
-    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+    private static readonly DiagnosticDescriptor bla0021 = new DiagnosticDescriptor(
         "BLA0021",
         "Asynchronous code blocking operations should be avoided",
         "Using '{0}' in asynchronous methods may cause deadlock",
         "Usage",
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        "Result may cause a DANGER deadlock and is not recommended for asynchronous methods.");
+        "Result may cause a DANGER deadlock and is not recommended for asynchronous methods.",
+        helpLinkUri: "https://github.com/kekyo/BaselineAnalyzer/blob/main/docs/BLA0021.md");
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-        ImmutableArray.Create(Rule);
+        ImmutableArray.Create(bla0021);
 
     public override void Initialize(AnalysisContext context)
     {
@@ -47,7 +48,7 @@ public sealed class TaskBlockingAnalyzer : DiagnosticAnalyzer
         if ((memberSymbol?.ContainingType?.IsType("System.Threading.Tasks", "Task") ?? false) &&
             (memberSymbol.Name == "Wait" || memberSymbol.Name == "Result"))
         {
-            var diagnostic = Diagnostic.Create(Rule, memberAccess.GetLocation(), memberSymbol.Name);
+            var diagnostic = Diagnostic.Create(bla0021, memberAccess.GetLocation(), memberSymbol.Name);
             context.ReportDiagnostic(diagnostic);
         }
     }

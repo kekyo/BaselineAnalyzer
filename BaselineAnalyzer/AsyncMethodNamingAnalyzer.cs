@@ -26,7 +26,8 @@ public class AsyncMethodNamingAnalyzer : DiagnosticAnalyzer
         "Naming",
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "Methods that return awaitable types are recommended to use 'Async' at the end of the method name.");
+        description: "Methods that return awaitable types are recommended to use 'Async' at the end of the method name.",
+        helpLinkUri: "https://github.com/kekyo/BaselineAnalyzer/blob/main/docs/BLA0011.md");
 
     private static readonly DiagnosticDescriptor bla0012 = new DiagnosticDescriptor(
         "BLA0012",
@@ -35,7 +36,8 @@ public class AsyncMethodNamingAnalyzer : DiagnosticAnalyzer
         "Naming",
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "Methods that return non-awaitable types are recommended not to use “Async” at the end of the method name.");
+        description: "Methods that return non-awaitable types are recommended not to use “Async” at the end of the method name.",
+        helpLinkUri: "https://github.com/kekyo/BaselineAnalyzer/blob/main/docs/BLA0012.md");
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
         ImmutableArray.Create(bla0011, bla0012);
