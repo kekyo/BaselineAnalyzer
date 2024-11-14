@@ -2,7 +2,7 @@
 
 C#初心者に優しいアナライザーパッケージ
 
-![Analyzer](Images/Analyzer.100.png)
+![BaselineAnalyzer](Images/BaselineAnalyzer.100.png)
 
 # Status
 

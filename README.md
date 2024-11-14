@@ -2,7 +2,7 @@
 
 Analyzer that is kind to C# beginners.
 
-![Analyzer](Images/Analyzer.100.png)
+![BaselineAnalyzer](Images/BaselineAnalyzer.100.png)
 
 # Status
 
@@ -15,7 +15,7 @@ Analyzer that is kind to C# beginners.
 
 ----
 
-[![Japanese language](Images/Japanese.256.png)](https://github.com/kekyo/BaselineAnalyzer/blob/main/README_ja.md)
+[![Japanese language](Images/Japanese.256.png)](https://github.com/kekyo/BaselineAnalyzer/blob/main/README.ja.md)
 
 ## What is this?
 
