@@ -335,5 +335,7 @@ Apache-v2
 
 ## History
 
+* 0.2.0:
+  * Changed referring to build with newer Roslyn package.
 * 0.1.0:
   * Initial release.

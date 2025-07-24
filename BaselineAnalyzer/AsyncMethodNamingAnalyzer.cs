@@ -54,11 +54,11 @@ public class AsyncMethodNamingAnalyzer : DiagnosticAnalyzer
         var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
         // Not extension method
-        if (!(methodDeclaration.ParameterList.Parameters.FirstOrDefault() is ParameterSyntax firstParam &&
+        if (!(methodDeclaration.ParameterList?.Parameters.FirstOrDefault() is ParameterSyntax firstParam &&
             firstParam.Modifiers.Any(SyntaxKind.ThisKeyword)))
         {
             // Get return type
-            var returnType = context.SemanticModel.GetTypeInfo(methodDeclaration.ReturnType).Type;
+            var returnType = context.SemanticModel?.GetTypeInfo(methodDeclaration.ReturnType).Type;
             if (returnType == null)
             {
                 return;
@@ -103,7 +103,7 @@ public class AsyncMethodNamingAnalyzer : DiagnosticAnalyzer
         {
             if (methodDeclaration.Identifier.Text != "Main" ||
                 !(methodDeclaration.Modifiers.Any(m => m.ValueText == "static") &&
-                  context.SemanticModel.GetTypeInfo(methodDeclaration.ReturnType).Type?.Name == "Task"))
+                  context.SemanticModel?.GetTypeInfo(methodDeclaration.ReturnType).Type?.Name == "Task"))
             {
                 var diagnostic = Diagnostic.Create(bla0011, methodDeclaration.Identifier.GetLocation(),
                     methodDeclaration.Identifier.Text);
