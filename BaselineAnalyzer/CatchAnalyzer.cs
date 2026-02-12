@@ -54,15 +54,19 @@ public class CatchAnalyzer : DiagnosticAnalyzer
         SyntaxNodeAnalysisContext context, CatchClauseSyntax catchClause)
     {
         var walker = new ThrowWalker(context);
-        walker.Visit(catchClause.Block);
-        if (!walker.HasThrow)
+        // catchClause.Block can be null (e.g., when using filter or incomplete code). Guard it.
+        if (catchClause.Block != null)
         {
-            var diagnostic = Diagnostic.Create(bla0001, catchClause.GetLocation());
-            context.ReportDiagnostic(diagnostic);
+            walker.Visit(catchClause.Block);
+            if (!walker.HasThrow)
+            {
+                var diagnostic = Diagnostic.Create(bla0001, catchClause.GetLocation());
+                context.ReportDiagnostic(diagnostic);
+            }
         }
-        
+
         // Detect 'throw ex;' instead of 'throw;'
-        if (catchClause.Declaration != null)
+        if (catchClause.Declaration != null && catchClause.Block != null)
         {
             var catchExceptionIdentifier = catchClause.Declaration.Identifier;
             foreach (var statement in catchClause.Block.Statements)
