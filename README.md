@@ -335,6 +335,8 @@ Apache-v2
 
 ## History
 
+* 0.3.0:
+  * Fixed causing NRE in newer roslyn.
 * 0.2.0:
   * Changed referring to build with newer Roslyn package.
 * 0.1.0:

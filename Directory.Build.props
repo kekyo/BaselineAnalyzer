@@ -52,7 +52,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="RelaxVersioner" Version="3.18.0" PrivateAssets="All" />
+    <PackageReference Include="RelaxVersioner" Version="3.21.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release'">

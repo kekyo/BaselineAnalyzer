@@ -45,7 +45,7 @@ public sealed class TaskBlockingAnalyzer : DiagnosticAnalyzer
         var symbolInfo = context.SemanticModel.GetSymbolInfo(memberAccess, context.CancellationToken);
         var memberSymbol = symbolInfo.Symbol;
 
-        if ((memberSymbol?.ContainingType?.IsType("System.Threading.Tasks", "Task") ?? false) &&
+        if (memberSymbol?.ContainingType?.IsType("System.Threading.Tasks", "Task") == true &&
             (memberSymbol.Name == "Wait" || memberSymbol.Name == "Result"))
         {
             var diagnostic = Diagnostic.Create(bla0021, memberAccess.GetLocation(), memberSymbol.Name);

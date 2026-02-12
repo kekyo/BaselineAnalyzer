@@ -5,6 +5,8 @@ namespace BaselineAnalyzer;
 internal static class Utilities
 {
     public static bool IsType(this ITypeSymbol symbol, string nsName, string typeBaseName) =>
+        symbol != null &&
+        symbol.ContainingNamespace != null &&
         symbol.ContainingNamespace.ToDisplayString() == nsName &&
         symbol.Name == typeBaseName;
 }
